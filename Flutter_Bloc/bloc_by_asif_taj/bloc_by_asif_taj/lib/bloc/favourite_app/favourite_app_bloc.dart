@@ -21,7 +21,7 @@ class FavouriteBloc extends Bloc<FavouriteEvents, FavouriteItemStates> {
       }
     });
 
-    on<AddToFavouriteEvent>((event,emit){
+    on<AddToFavouriteEvent>((event,emit)async{
       if(state is FavouriteItemLoaded){
         final currentState = state as FavouriteItemLoaded;
         final updatedList = currentState.favouriteItems.map((item){
@@ -29,12 +29,55 @@ class FavouriteBloc extends Bloc<FavouriteEvents, FavouriteItemStates> {
             return FavouriteItem(
                 id: item.id,
                 value:item.value,
-                isFavourite: !item.isFavourite
+                isFavourite: !item.isFavourite,
+                isDeleting: item.isDeleting
             );
           }
           return item;
         }).toList();
         emit(FavouriteItemLoaded(favouriteItems: updatedList));
-    }});
+      }});
+
+    on<SelectItem>((event,emit)async{
+      if(state is FavouriteItemLoaded){
+        final currentState = state as FavouriteItemLoaded;
+        final updatedList = currentState.favouriteItems.map((item){
+          if(item.id == event.favouriteItem.id){
+            return FavouriteItem(
+                id: item.id,
+                value:item.value,
+                isFavourite: item.isFavourite,
+                isDeleting: true
+            );
+          }
+          return item;
+        }).toList();
+        emit(FavouriteItemLoaded(favouriteItems: updatedList));
+      }
+    });
+
+    on<UnSelectItem>((event,emit)async{
+      if(state is FavouriteItemLoaded){
+        final currentState = state as FavouriteItemLoaded;
+        final updatedList = currentState.favouriteItems.map((item){
+          if(item.id == event.favouriteItem.id){
+            return FavouriteItem(
+                id: item.id,
+                value:item.value,
+                isFavourite: item.isFavourite,
+                isDeleting: false
+            );
+          }
+          return item;
+        }).toList();
+        emit(FavouriteItemLoaded(favouriteItems: updatedList));
+      }
+    });
+
+    on<DeleteItemsEvent>((event,emit)async{
+      await favouriteRepository.deletedSelectedItems();
+      final favouriteItem = await favouriteRepository.fetchItem();
+      emit(FavouriteItemLoaded(favouriteItems: favouriteItem));
+    });
   }
 }

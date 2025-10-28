@@ -17,3 +17,18 @@ class AddToFavouriteEvent extends FavouriteEvents{
   List<Object?> get props => [favouriteItem];
 }
 
+class SelectItem extends FavouriteEvents{
+  final FavouriteItem favouriteItem;
+  const SelectItem({required this.favouriteItem});
+  @override
+  List<Object?> get props => [favouriteItem];
+}
+
+class UnSelectItem extends FavouriteEvents{
+  final FavouriteItem favouriteItem;
+  const UnSelectItem({required this.favouriteItem});
+  @override
+  List<Object?> get props => [favouriteItem];
+}
+
+class DeleteItemsEvent extends FavouriteEvents{}

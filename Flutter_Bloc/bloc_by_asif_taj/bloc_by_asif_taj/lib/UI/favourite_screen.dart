@@ -14,6 +14,14 @@ class FavouriteItemScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Favourite Items'),
+        actions: [
+          IconButton(
+              onPressed: (){
+                context.read<FavouriteBloc>().add(DeleteItemsEvent());
+              },
+              icon: Icon(Icons.delete,color: Colors.red,)
+          )
+        ],
       ),
       body: BlocBuilder<FavouriteBloc,FavouriteItemStates>(
           builder: (context,state){
@@ -38,9 +46,13 @@ class FavouriteItemScreen extends StatelessWidget {
                               icon: item.isFavourite ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
                           ),
                           leading: Checkbox(
-                              value: true,
+                              value: item.isDeleting,
                               onChanged: (value){
-
+                                if(value=true){
+                                  context.read<FavouriteBloc>().add(SelectItem(favouriteItem: item));
+                                }else{
+                                  context.read<FavouriteBloc>().add(UnSelectItem(favouriteItem: item));
+                                }
                               }
                           ),
                         ),

@@ -11,10 +11,10 @@ class FavouriteBloc extends Bloc<FavouriteEvents, FavouriteItemStates> {
   FavouriteBloc(this.favouriteRepository)
       : super(const FavouriteItemLoading()) {
 
-    on<LoadFavouriteItemsEvent>((event, emit) async {
+    on<LoadFavouriteItemsEvent>((event, emit)  {
       emit(const FavouriteItemLoading());
       try{
-        final favouriteItem = await favouriteRepository.fetchItem();
+        final favouriteItem =  favouriteRepository.fetchItem();
         emit(FavouriteItemLoaded(favouriteItems: favouriteItem));
       }catch(e){
         emit(FavouriteItemError(e.toString()));
@@ -35,6 +35,7 @@ class FavouriteBloc extends Bloc<FavouriteEvents, FavouriteItemStates> {
           }
           return item;
         }).toList();
+        favouriteRepository.updateList(updatedList);
         emit(FavouriteItemLoaded(favouriteItems: updatedList));
       }});
 
@@ -52,6 +53,7 @@ class FavouriteBloc extends Bloc<FavouriteEvents, FavouriteItemStates> {
           }
           return item;
         }).toList();
+        favouriteRepository.updateList(updatedList);
         emit(FavouriteItemLoaded(favouriteItems: updatedList));
       }
     });
@@ -70,13 +72,14 @@ class FavouriteBloc extends Bloc<FavouriteEvents, FavouriteItemStates> {
           }
           return item;
         }).toList();
+        favouriteRepository.updateList(updatedList);
         emit(FavouriteItemLoaded(favouriteItems: updatedList));
       }
     });
 
-    on<DeleteItemsEvent>((event,emit)async{
-      await favouriteRepository.deletedSelectedItems();
-      final favouriteItem = await favouriteRepository.fetchItem();
+    on<DeleteItemsEvent>((event,emit){
+       favouriteRepository.deletedSelectedItems();
+      final favouriteItem =  favouriteRepository.fetchItem();
       emit(FavouriteItemLoaded(favouriteItems: favouriteItem));
     });
   }

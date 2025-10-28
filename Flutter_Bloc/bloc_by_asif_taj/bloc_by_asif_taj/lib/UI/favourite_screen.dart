@@ -43,12 +43,12 @@ class FavouriteItemScreen extends StatelessWidget {
                               onPressed: (){
                                 context.read<FavouriteBloc>().add(AddToFavouriteEvent(favouriteItem: FavouriteItem(id: item.id, value: item.value, isFavourite: !item.isFavourite)));
                               },
-                              icon: item.isFavourite ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                              icon: item.isFavourite ? Icon(Icons.favorite,color: Colors.red,) : Icon(Icons.favorite_border),
                           ),
                           leading: Checkbox(
                               value: item.isDeleting,
                               onChanged: (value){
-                                if(value=true){
+                                if(value==true){
                                   context.read<FavouriteBloc>().add(SelectItem(favouriteItem: item));
                                 }else{
                                   context.read<FavouriteBloc>().add(UnSelectItem(favouriteItem: item));

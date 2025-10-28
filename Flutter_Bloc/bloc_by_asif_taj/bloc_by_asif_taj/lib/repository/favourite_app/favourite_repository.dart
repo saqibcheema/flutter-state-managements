@@ -26,16 +26,15 @@ class FavouriteRepository{
     FavouriteItem(id: '20', value: 'Item 20'),
   ];
 
-  Future<List<FavouriteItem>> fetchItem() async{
-    return _items;
-  }
+  List<FavouriteItem> fetchItem() => List.from(_items);
 
-  Future<void> deletedSelectedItems()async{
+
+  deletedSelectedItems(){
     _items.removeWhere((item) => item.isDeleting == true);
   }
 
-  Future<void> updateList(List<FavouriteItem> updatedList)async{
+  updateList(List<FavouriteItem> updatedList){
     _items..clear()..addAll(updatedList);
   }
-  
+
 }
